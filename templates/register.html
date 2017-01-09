@@ -1,0 +1,56 @@
+{% extends "mainNavBar.html" %}
+
+
+
+{% block registerBody %}
+
+<head>
+  <title>Registeration Page</title>
+  <link rel = "stylesheet" href = "/static/css/cssStyleSheet.css">
+</head>
+
+<body>
+<center>
+<div class="container">
+  <label style = "color:#666666"> <a href = "/" style = "text-decoration: none; color: #2f2828"> <h2>POCKET TANKS</h2> </a> </label>
+  <div class="imgcontainer">
+    <img src="/static/images/img_avatar2.png" alt="Avatar" width = "180" style = "border-radius: 20%;">
+  </div>
+
+  <form action = "/register/" method = "Post" >
+    {% from "_formHelper.html" import render_field %}
+    <br>
+    <label style = "color:#666666">
+    {{ form. username. label }}<br>
+    {{ form. username( *args) | safe }}<br>
+    {{ render_field( form. username) }}
+    {{ form. password. label }}<br>
+    {{ form. password( *args) | safe }}<br>
+    {{ render_field( form. password) }}
+    {{ form. confirm. label }}<br>
+    {{ form. confirm( *args) | safe }}<br>
+    {{ render_field( form. confirm) }}<br>
+    {{ form. accept_TnC( *args) | safe}}
+    {{ form. accept_TnC. label }}<br>
+    {{ render_field( form. accept_TnC) }}
+    </label>
+    <br>
+    {% if error %}
+      <br><label style = "font-size: 14px; color: red;"> {{error}} </label> <br><br>
+    {% endif %}
+    <input class = "c1" type="submit" value = "Register">
+  </form>
+
+  {% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+        <br><label style = "font-size: 14px; color: red;"> {{message}} </label> <br><br>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
+
+</div>
+</center>
+</body>
+
+{% endblock %}
