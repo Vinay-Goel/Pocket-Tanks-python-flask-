@@ -14,14 +14,23 @@ import gc
 
 import os
 
+import subprocess
+
 from werkzeug import secure_filename
 
+import threading
+
+import time
+
+
+import bridge
 
 
 
 
 
-UPLOAD_FOLDER = 'static/bots/'
+
+UPLOAD_FOLDER = 'bots/'
 ALLOWED_EXTENSIONS = set([ 'c', 'cpp', 'java'])
 
 app = Flask(__name__)
@@ -198,6 +207,22 @@ def logout():
 
 
 
+class threadFunc( threading. Thread):
+
+    def __init__( self, bot1, bot2):
+
+        threading. Thread. __init__( self)
+        self. bot1 = bot1
+        self. bot2 = bot2
+
+
+    def run( self):
+
+        time. sleep( 3)
+        os. chdir( "/home/vinay/Desktop/python/flask/pocketTanks/bots/")
+        os. system( "java judge " + self. bot1 + " " + self. bot2)
+
+
 
 
 
@@ -222,7 +247,7 @@ def dashboard():
 
             botID = 1
 
-            c. execute( "select max( botID) from bots");
+            c. execute( "select max( botID) from bots")
             st = str( c. fetchone()[ 0] )
 
             if st != 'None':
@@ -235,7 +260,6 @@ def dashboard():
             fObj. save( os. path. join( app. config[ 'UPLOAD_FOLDER'], secure_filename( fObj.filename) ) )
 
 
-            flash( "hello")
 
             c. execute( "select botID, extn from bots where usersLastSubmission = 1")
 
@@ -245,7 +269,11 @@ def dashboard():
 
                 opponent = str( row[ 0] ) + row[ 1]
 
-                flash( "hi")
+                thread1 = threadFunc( fObj. filename, opponent)
+                thread1. start()
+
+
+
 
 
 
